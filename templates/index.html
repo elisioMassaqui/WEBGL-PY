@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebGL Drawer Integration</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            overflow-x: hidden;
+        }
+        .drawer {
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+        }
+        .drawer-content {
+            flex: 1;
+            padding: 20px;
+            overflow: auto;
+        }
+        .drawer-side {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 50%;
+            min-width: 300px;
+            height: 100%;
+            background: #f4f4f4;
+            color: #333;
+            transform: translateX(-100%);
+            transition: transform 0.3s, width 0.3s;
+            overflow: hidden;
+            z-index: 10;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
+            display: flex;
+            flex-direction: column;
+        }
+        .drawer-side.open {
+            transform: translateX(0);
+        }
+        .drawer-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.3);
+            display: none;
+            z-index: 5;
+        }
+        .drawer-overlay.show {
+            display: block;
+        }
+        .toolbar {
+            position: fixed;
+            top: 0;
+            right: 0;
+            height: 30px;
+            width: 100%;
+            background: #007bff;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding: 0 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            z-index: 15;
+        }
+        .toolbar button {
+            background: #0056b3;
+            border: none;
+            color: white;
+            padding: 4px 6px;
+            margin: 4px 4px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background 0.3s;
+        }
+        .toolbar button:hover {
+            background: #003d7a;
+        }
+        #webgl-frame {
+            width: 100%;
+            height: calc(100vh - 60px); /* Adjusted to account for toolbar height */
+            border: none;
+        }
+    </style>
+</head>
+<body>
+    <!-- Toolbar -->
+    <div class="toolbar">
+        <button id="toggle-drawer">Open Drawer</button>
+        <button id="set-50">50%</button>
+        <button id="set-100">100%</button>
+        <button id="restart-webgl">Restart WebGL</button>
+    </div>
+
+    <div class="drawer">
+        <!-- Drawer -->
+        <div class="drawer-side" id="drawer">
+            <div class="drawer-buttons">
+                <button class="drawer-button" id="close-drawer">Close Drawer</button>
+            </div>
+            <iframe id="webgl-frame" src="http://localhost:8000/index.html"></iframe>
+        </div>
+
+        <div class="drawer-overlay" id="overlay"></div>
+    </div>
+
+    <script>
+        const toggleDrawer = document.getElementById('toggle-drawer');
+        const closeDrawer = document.getElementById('close-drawer');
+        const drawer = document.getElementById('drawer');
+        const overlay = document.getElementById('overlay');
+        const set50 = document.getElementById('set-50');
+        const set100 = document.getElementById('set-100');
+        const restartWebGL = document.getElementById('restart-webgl');
+        const webglFrame = document.getElementById('webgl-frame');
+
+        toggleDrawer.addEventListener('click', () => {
+            drawer.classList.add('open');
+            overlay.classList.add('show');
+        });
+
+        closeDrawer.addEventListener('click', () => {
+            drawer.classList.remove('open');
+            overlay.classList.remove('show');
+        });
+
+        overlay.addEventListener('click', () => {
+            drawer.classList.remove('open');
+            overlay.classList.remove('show');
+        });
+
+        set50.addEventListener('click', () => {
+            drawer.style.width = '50%';
+        });
+
+        set100.addEventListener('click', () => {
+            drawer.style.width = '100%';
+        });
+
+        restartWebGL.addEventListener('click', () => {
+            // Restart WebGL by resetting the iframe src
+            webglFrame.src = webglFrame.src;
+        });
+    </script>
+</body>
+</html>
