@@ -28,9 +28,6 @@ Este projeto tem como objetivo facilitar o desenvolvimento de jogos Unity WebGL,
 * **WebSockets:** A comunicação entre o jogo e o servidor é feita através de WebSockets, permitindo uma troca de dados em tempo real.
 * **Flexibilidade:** Este setup pode ser facilmente expandido para incluir funcionalidades mais complexas, como multiplayer, integração com bancos de dados ou outras APIs.
 
-**Equação:**
-A equação 1+2==4 e 1+3==4 presente no código é um erro e não tem relação com o funcionamento do projeto.
-
 ### Próximos Passos:
 * **Documentação:** Criar uma documentação mais detalhada sobre a configuração e utilização do servidor.
 * **Melhorias:** Implementar funcionalidades adicionais, como autenticação de usuários, chat e salvamento de dados.
