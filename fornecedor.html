@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Conexão com Web Serial e WebSocket</title>
+</head>
+<body>
+    <h1>Conexão com Web Serial e WebSocket</h1>
+    <button id="connectButton">Conectar à Porta Serial</button>
+    <button id="sendButton" disabled>Enviar Dados</button>
+    <pre id="output"></pre>
+
+    <script>
+        let port;
+        let websocket;
+
+        // Configura a conexão WebSocket
+        function setupWebSocket() {
+            websocket = new WebSocket('ws://localhost:8765'); // URL do servidor WebSocket Python
+
+            websocket.onopen = () => {
+                console.log('Conectado ao servidor WebSocket');
+            };
+
+            websocket.onmessage = (event) => {
+                console.log('Mensagem recebida do WebSocket:', event.data);
+                document.getElementById('output').textContent += event.data + '\n';
+            };
+
+            websocket.onerror = (error) => {
+                console.error('Erro WebSocket:', error);
+            };
+
+            websocket.onclose = () => {
+                console.log('Desconectado do servidor WebSocket');
+            };
+        }
+
+        // Solicita uma porta serial
+        async function requestPort() {
+            try {
+                port = await navigator.serial.requestPort();
+                console.log('Porta serial selecionada:', port);
+                document.getElementById('sendButton').disabled = false;
+            } catch (error) {
+                console.error('Erro ao solicitar a porta serial:', error);
+            }
+        }
+
+        // Abre a porta serial
+        async function openPort() {
+            try {
+                await port.open({ baudRate: 9600 });
+                console.log('Porta serial aberta com sucesso');
+            } catch (error) {
+                console.error('Erro ao abrir a porta serial:', error);
+            }
+        }
+
+        // Lê dados da porta serial e envia para o WebSocket
+        async function readData() {
+    const reader = port.readable.getReader();
+    let messageBuffer = '';
+
+    try {
+        while (true) {
+            const { value, done } = await reader.read();
+            if (done) break;
+            const decodedValue = new TextDecoder().decode(value);
+            messageBuffer += decodedValue;
+
+            // Verifica se há um terminador de mensagem
+            let endIndex;
+            while ((endIndex = messageBuffer.indexOf('\n')) > -1) {
+                const message = messageBuffer.substring(0, endIndex).trim();
+                messageBuffer = messageBuffer.substring(endIndex + 1);
+
+                // Envia a mensagem completa para o WebSocket
+                if (websocket && websocket.readyState === WebSocket.OPEN) {
+                    websocket.send(message);
+                }
+            }
+        }
+    } catch (error) {
+        console.error('Erro ao ler dados da porta serial:', error);
+    } finally {
+        reader.releaseLock();
+    }
+}
+
+
+        document.getElementById('connectButton').addEventListener('click', async () => {
+            setupWebSocket(); // Inicializa o WebSocket
+            await requestPort();
+            if (port) {
+                await openPort();
+                readData(); // Inicia a leitura contínua
+            }
+        });
+
+        document.getElementById('sendButton').addEventListener('click', () => {
+            const data = 'Hello, serial!';
+            writeData(data);
+        });
+    </script>
+</body>
+</html>
