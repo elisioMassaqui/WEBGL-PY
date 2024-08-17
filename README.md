@@ -10,7 +10,7 @@
 1 + 3 == 4
 ```
 
-## Servidor Local Python para Desenvolvimento de Jogos Unity WebGL
+## Servidor Local Python para Desenvolvimento de Jogos Unity WebGL e Comunicação WS
 
 Este projeto tem como objetivo facilitar o desenvolvimento de jogos Unity WebGL, fornecendo um servidor local Python para testar builds sem a necessidade de um servidor remoto.
 
