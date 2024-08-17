@@ -10,7 +10,7 @@
 1 + 3 == 4
 ```
 
-## Servidor Local Python para Desenvolvimento de Jogos Unity WebGL e Comunicação WS
+## Servidor Local Python para Desenvolvimento de Jogos Unity WebGL e Comunicação WS entre WEBGL e Python ou Javascript dependendo da sua necessidade.
 
 Este projeto tem como objetivo facilitar o desenvolvimento de jogos Unity WebGL, fornecendo um servidor local Python para testar builds sem a necessidade de um servidor remoto.
 
@@ -25,7 +25,7 @@ Este projeto tem como objetivo facilitar o desenvolvimento de jogos Unity WebGL,
 3. **Acesso:** Abra um navegador e digite o endereço local do servidor (ex: http://localhost:8000) para acessar o jogo.
 
 ### Observações:
-* **WebSockets:** A comunicação entre o jogo e o servidor é feita através de WebSockets, permitindo uma troca de dados em tempo real.
+* **WebSockets:** A comunicação entre o jogo e o servidor é feita através de WebSockets, permitindo uma troca de dados em tempo real, entre WEBGL e Python ou Javascript dependendo da sua necessidade.
 * **Flexibilidade:** Este setup pode ser facilmente expandido para incluir funcionalidades mais complexas, como multiplayer, integração com bancos de dados ou outras APIs.
 
 ### Próximos Passos:
